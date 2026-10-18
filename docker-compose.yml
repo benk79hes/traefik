@@ -9,14 +9,14 @@ services:
       
     command:
       # --- Global & Providers ---
-      - --log.level=DEBUG
+      - --log.level=INFO
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false 
       
       # --- API & Dashboard ---
       - --api=true
-      - --api.dashboard=true # L'API est maintenant routée via les labels
-      - --api.insecure=true
+      - --api.dashboard=true
+      # Pas de --api.insecure ni de routeur public : tableau de bord non exposé (tâche 026)
       
       # --- Entrypoints ---
       - --entrypoints.web.address=:80
@@ -38,21 +38,10 @@ services:
     restart: unless-stopped
     
     labels:
-      # 1. Activer Traefik pour le Dashboard
       - "traefik.enable=true"
-      
-      # 2. Définir le service interne (l'API de Traefik)
-      - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
 
-      # --- ROUTEUR HTTPS (Dashboard) ---
-      - "traefik.http.routers.dashboard.rule=Host(`v1.valaisweb.com`)"
-      - "traefik.http.routers.dashboard.entrypoints=websecure"
-      - "traefik.http.routers.dashboard.tls.certresolver=le"
-      
-      # --- REDIRECTION HTTP vers HTTPS ---
-      - "traefik.http.routers.dashboard-http.rule=Host(`v1.valaisweb.com`)"
-      - "traefik.http.routers.dashboard-http.entrypoints=web"
-      - "traefik.http.routers.dashboard-http.middlewares=https-redirect"
+      # Tableau de bord : plus de routeur public (tâche 026).
+      # Middleware gardé pour une future redirection http -> https globale.
       - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
       - "traefik.http.middlewares.https-redirect.redirectscheme.permanent=true"
 

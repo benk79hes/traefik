@@ -12,6 +12,8 @@ services:
       - --log.level=INFO
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false 
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
       
       # --- API & Dashboard ---
       - --api=true
@@ -34,6 +36,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./acme:/acme
+      - ./dynamic:/etc/traefik/dynamic:ro
       
     restart: unless-stopped
     

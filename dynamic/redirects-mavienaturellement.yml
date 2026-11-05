@@ -1,0 +1,26 @@
+http:
+  routers:
+    nhm-group-http:
+      rule: "Host(`naturalhealthmeans.com`) || Host(`www.naturalhealthmeans.com`) || Host(`labosp.com`) || Host(`www.labosp.com`) || Host(`easynutrition.eu`) || Host(`www.easynutrition.eu`) || Host(`easynutrition.naturalhealthmeans.com`) || Host(`www.easynutrition.naturalhealthmeans.com`)"
+      entryPoints:
+        - web
+      middlewares:
+        - redirect-nhm-group-to-vsn
+      service: noop@internal
+
+    nhm-group-https:
+      rule: "Host(`naturalhealthmeans.com`) || Host(`www.naturalhealthmeans.com`) || Host(`labosp.com`) || Host(`www.labosp.com`) || Host(`easynutrition.eu`) || Host(`www.easynutrition.eu`) || Host(`easynutrition.naturalhealthmeans.com`) || Host(`www.easynutrition.naturalhealthmeans.com`)"
+      entryPoints:
+        - websecure
+      middlewares:
+        - redirect-nhm-group-to-vsn
+      tls:
+        certResolver: le
+      service: noop@internal
+
+  middlewares:
+    redirect-nhm-group-to-vsn:
+      redirectRegex:
+        regex: "^https?://[^/]+.*$"
+        replacement: "https://mavienaturellement.com/pages/bienvenue-migration-nhm-labosp-easynutrition"
+        permanent: true

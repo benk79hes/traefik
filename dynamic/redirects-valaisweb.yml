@@ -1,0 +1,26 @@
+http:
+  routers:
+    cmsgen-http:
+      rule: "Host(`cmsgen.net`) || Host(`www.cmsgen.net`) || Host(`cmsgensearch.app.cmsgen.net`) || Host(`newsletter.app.cmsgen.net`) || Host(`alpha.cmsgen.net`)"
+      entryPoints:
+        - web
+      middlewares:
+        - redirect-cmsgen-to-valaisweb
+      service: noop@internal
+
+    cmsgen-https:
+      rule: "Host(`cmsgen.net`) || Host(`www.cmsgen.net`) || Host(`cmsgensearch.app.cmsgen.net`) || Host(`newsletter.app.cmsgen.net`) || Host(`alpha.cmsgen.net`)"
+      entryPoints:
+        - websecure
+      middlewares:
+        - redirect-cmsgen-to-valaisweb
+      tls:
+        certResolver: le
+      service: noop@internal
+
+  middlewares:
+    redirect-cmsgen-to-valaisweb:
+      redirectRegex:
+        regex: "^https?://[^/]+.*$"
+        replacement: "https://www.valaisweb.com/"
+        permanent: true

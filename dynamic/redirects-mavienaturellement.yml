@@ -1,7 +1,7 @@
 http:
   routers:
     nhm-group-http:
-      rule: "Host(`naturalhealthmeans.com`) || Host(`www.naturalhealthmeans.com`) || Host(`labosp.com`) || Host(`www.labosp.com`) || Host(`easynutrition.eu`) || Host(`www.easynutrition.eu`) || Host(`easynutrition.naturalhealthmeans.com`) || Host(`www.easynutrition.naturalhealthmeans.com`)"
+      rule: "Host(`naturalhealthmeans.com`) || Host(`www.naturalhealthmeans.com`) || Host(`labosp.naturalhealthmeans.com`) || Host(`net.naturalhealthmeans.com`) || Host(`stat.naturalhealthmeans.com`) || Host(`naturalhealthmeans.net`) || Host(`www.naturalhealthmeans.net`) || Host(`accounts.naturalhealthmeans.net`) || Host(`stat.naturalhealthmeans.net`) || Host(`labosp.com`) || Host(`www.labosp.com`) || Host(`easynutrition.eu`) || Host(`www.easynutrition.eu`) || Host(`easynutrition.naturalhealthmeans.com`) || Host(`www.easynutrition.naturalhealthmeans.com`)"
       entryPoints:
         - web
       middlewares:
@@ -9,11 +9,29 @@ http:
       service: noop@internal
 
     nhm-group-https:
-      rule: "Host(`naturalhealthmeans.com`) || Host(`www.naturalhealthmeans.com`) || Host(`labosp.com`) || Host(`www.labosp.com`) || Host(`easynutrition.eu`) || Host(`www.easynutrition.eu`) || Host(`easynutrition.naturalhealthmeans.com`) || Host(`www.easynutrition.naturalhealthmeans.com`)"
+      rule: "Host(`naturalhealthmeans.com`) || Host(`www.naturalhealthmeans.com`) || Host(`labosp.naturalhealthmeans.com`) || Host(`net.naturalhealthmeans.com`) || Host(`stat.naturalhealthmeans.com`) || Host(`naturalhealthmeans.net`) || Host(`www.naturalhealthmeans.net`) || Host(`accounts.naturalhealthmeans.net`) || Host(`stat.naturalhealthmeans.net`) || Host(`labosp.com`) || Host(`www.labosp.com`) || Host(`easynutrition.eu`) || Host(`www.easynutrition.eu`) || Host(`easynutrition.naturalhealthmeans.com`) || Host(`www.easynutrition.naturalhealthmeans.com`)"
       entryPoints:
         - websecure
       middlewares:
         - redirect-nhm-group-to-vsn
+      tls:
+        certResolver: le
+      service: noop@internal
+
+    sante-nature-science-http:
+      rule: "Host(`sante-nature-science.com`) || Host(`www.sante-nature-science.com`)"
+      entryPoints:
+        - web
+      middlewares:
+        - redirect-sante-nature-science
+      service: noop@internal
+
+    sante-nature-science-https:
+      rule: "Host(`sante-nature-science.com`) || Host(`www.sante-nature-science.com`)"
+      entryPoints:
+        - websecure
+      middlewares:
+        - redirect-sante-nature-science
       tls:
         certResolver: le
       service: noop@internal
@@ -23,4 +41,10 @@ http:
       redirectRegex:
         regex: "^https?://[^/]+.*$"
         replacement: "https://mavienaturellement.com/pages/bienvenue-migration-nhm-labosp-easynutrition"
+        permanent: true
+
+    redirect-sante-nature-science:
+      redirectRegex:
+        regex: "^https?://[^/]+.*$"
+        replacement: "https://mavienaturellement.com/"
         permanent: true

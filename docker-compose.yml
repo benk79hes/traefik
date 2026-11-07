@@ -2,7 +2,10 @@ version: '3.9'
 
 services:
   traefik:
-    image: traefik:latest
+    # Étiquette fixée (tâche 036, audit 026 M4) : branche v3.6, celle en
+    # service (3.6.1, image du 2025-11-13). Un pull ne suit que les
+    # correctifs 3.6.x ; passer à une autre branche est une décision.
+    image: traefik:v3.6
     container_name: traefik
     networks:
       - traefik-proxy # Pour la communication avec les autres services
